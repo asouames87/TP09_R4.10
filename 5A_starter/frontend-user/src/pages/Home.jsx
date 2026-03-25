@@ -30,8 +30,8 @@ function Home() {
   // Fonction pour charger les films
   const fetchMovies = async () => {
     try {
-      const data = await moviesAPI.getAll();
-      setMovies(data.movies || data);
+      const resp = await moviesAPI.getAll();
+      setMovies(resp.data || resp.movies || resp || []);
     } catch (err) {
       error("Erreur lors du chargement des films");
     }
@@ -45,8 +45,8 @@ function Home() {
   // Charger les films populaires
   const loadPopularMovies = async () => {
     try {
-      const data = await moviesAPI.getPopular();
-      setPopularMovies(data);
+      const resp = await moviesAPI.getPopular();
+      setPopularMovies(resp.data || resp || []);
     } catch (err) {
       console.error("Erreur populaires:", err);
     }
@@ -55,8 +55,8 @@ function Home() {
   // Charger les films récents
   const loadRecentMovies = async () => {
     try {
-      const data = await moviesAPI.getRecent();
-      setRecentMovies(data);
+      const resp = await moviesAPI.getRecent();
+      setRecentMovies(resp.data || resp || []);
     } catch (err) {
       console.error("Erreur récents:", err);
     }
