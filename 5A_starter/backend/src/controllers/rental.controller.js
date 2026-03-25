@@ -278,5 +278,33 @@ export const getRentalStats = async (req, res, next) => {
 // @route   GET /api/rentals/recommendations
 // @access  Private
 export const getRecommendations = async (req, res, next) => {
-  //TODO
+  try {
+    const userId = req.user._id;
+
+    // Récupérer les genres préférés de l'utilisateur
+    const user = await User.findById(userId);
+    const favoriteGenres = user.favoriteGenres;
+
+    // Récupérer les films déjà loués par l'utilisateur
+    const rentals = await Rental.find({ user: userId }).select("movie");
+    const rentedMovieIds = rentals.map((r) => r.movie);
+
+    // Chercher des films dans les genres préférés, non encore loués
+    let query = { _id: { $nin: rentedMovieIds } };
+    if (favoriteGenres.length > 0) {
+      query.genre = { $in: favoriteGenres };
+    }
+
+    const recommendations = await Movie.find(query)
+      .sort({ rating: -1 })
+      .limit(10);
+
+    res.status(200).json({
+      success: true,
+      count: recommendations.length,
+      data: recommendations,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
