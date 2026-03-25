@@ -342,14 +342,36 @@ export const getSimilarMovies = async (req, res, next) => {
 // @route   GET /api/movies/popular
 // @access  Public
 export const getPopularMovies = async (req, res, next) => {
-  //TODO
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const movies = await Movie.getPopularMovies(limit);
+
+    res.status(200).json({
+      success: true,
+      count: movies.length,
+      data: movies,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 // @desc    Obtenir les films récemment ajoutés
 // @route   GET /api/movies/recent
 // @access  Public
 export const getRecentMovies = async (req, res, next) => {
- //TODO
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const movies = await Movie.getRecentMovies(limit);
+
+    res.status(200).json({
+      success: true,
+      count: movies.length,
+      data: movies,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 // @desc    Obtenir les films d'un genre spécifique
 // @route   GET /api/movies/genre/:genre
@@ -378,5 +400,16 @@ export const getMoviesByGenre = async (req, res, next) => {
 // @route   GET /api/movies/random
 // @access  Public
 export const getRandomMovies = async (req, res, next) => {
- //TODO
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const movies = await Movie.getRandomMovies(limit);
+
+    res.status(200).json({
+      success: true,
+      count: movies.length,
+      data: movies,
+    });
+  } catch (error) {
+    next(error);
+  }
 };

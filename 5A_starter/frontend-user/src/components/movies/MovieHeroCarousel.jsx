@@ -25,7 +25,7 @@ const MovieHeroCarousel = () => {
                 } else {
                     data = await moviesAPI.getRandom(5);
                 }
-                setMovies(data || []);
+                setMovies(data.data || data || []);
             } catch (error) {
                 console.error("Error fetching carousel movies:", error);
             } finally {
