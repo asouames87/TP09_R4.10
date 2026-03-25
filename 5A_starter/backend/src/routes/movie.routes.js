@@ -8,6 +8,7 @@ import {
   getMovieStats,
   getSimilarMovies,
   getMoviesByGenre,
+  getRandomMovies,
 } from "../controllers/movie.controller.js";
 import { protect, admin } from "../middleware/auth.middleware.js";
 
@@ -15,23 +16,17 @@ const router = express.Router();
 
 // Routes publiques
 router.get("/", getAllMovies);
+router.get("/random", getRandomMovies);       
+router.get("/genre/:genre", getMoviesByGenre); 
+router.get("/stats", protect, admin, getMovieStats); 
 
-// Route pour obtenir un film par ID, ou les films populaires/récents/aléatoires
+// Routes dynamiques avec paramètre
 router.get("/:id", getMovieById);
-
 router.get("/:id/similar", getSimilarMovies);
-router.get("/genre/:genre", getMoviesByGenre);
 
-
-// Routes protégées admin (sera activé séance 9)
+// Routes protégées admin
 router.post("/", protect, admin, createMovie);
 router.put("/:id", protect, admin, updateMovie);
 router.delete("/:id", protect, admin, deleteMovie);
-router.get("/stats", protect, admin, getMovieStats);
-
-// Routes temporaires sans authentification (pour tester)
-router.post("/", createMovie);
-router.put("/:id", updateMovie);
-router.delete("/:id", deleteMovie);
 
 export default router;
