@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/layout/Footer";
 import MovieCarousel from "../components/movies/MovieCarousel";
-import MovieHero from "../components/movies/MovieHero";
+import MovieHeroCarousel from "../components/movies/MovieHeroCarousel";
 import Loading from "../components/common/Loading";
 
 // Context
@@ -29,7 +29,12 @@ function Home() {
 
   // Fonction pour charger les films
   const fetchMovies = async () => {
-   //TODO:
+    try {
+      const data = await moviesAPI.getAll();
+      setMovies(data.movies || data);
+    } catch (err) {
+      error("Erreur lors du chargement des films");
+    }
   };
 
   // Charger les films
@@ -39,13 +44,36 @@ function Home() {
 
   // Charger les films populaires
   const loadPopularMovies = async () => {
-    //TODO:
+    try {
+      const data = await moviesAPI.getPopular();
+      setPopularMovies(data);
+    } catch (err) {
+      console.error("Erreur populaires:", err);
+    }
   };
 
   // Charger les films récents
   const loadRecentMovies = async () => {
-    //TODO:
+    try {
+      const data = await moviesAPI.getRecent();
+      setRecentMovies(data);
+    } catch (err) {
+      console.error("Erreur récents:", err);
+    }
   };
+
+  useEffect(() => {
+    const loadAllData = async () => {
+      setLoading(true);
+      await Promise.all([
+        fetchMovies(),
+        loadPopularMovies(),
+        loadRecentMovies()
+      ]);
+      setLoading(false);
+    };
+    loadAllData();
+  }, []);
 
   
 
@@ -75,11 +103,11 @@ function Home() {
       <Navbar movies={movies} onSearch={""} />
 
       {/* Hero Section */}
-      <MovieHero  movie={movies[0]} />
+      <MovieHeroCarousel />
       {/* Movies Lists */}
       <div className="container mx-auto">
-        <MovieCarousel title="Films populaires" movies={[]} />
-        <MovieCarousel title="Films récents" movies={[]} />
+        <MovieCarousel title="Films populaires" movies={popularMovies} />
+        <MovieCarousel title="Films récents" movies={recentMovies} />
 
       
       </div>

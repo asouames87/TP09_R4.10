@@ -193,14 +193,14 @@ export const moviesAPI = {
    * Obtenir les films récents
    */
   getRecent: async () => {
-    //TODO:
+    return await fetchAPI("/movies/recent");
   },
 
   /**
    * Obtenir les films populaires
    */
   getPopular: async () => {
-    //TODO:
+    return await fetchAPI("/movies/popular");
   },
 
 
@@ -210,7 +210,7 @@ export const moviesAPI = {
    * @returns
    */
   getRandom: async (limit = 10) => {
-    //TODO:
+    return await fetchAPI(`/movies/random?limit=${limit}`);
   },
 
   /**
@@ -339,7 +339,7 @@ export const rentalsAPI = {
 
   //obtenir les recommandations basées sur les genres préférés
   getRecommendedMovies: async (limit = 10) => {
-//TODO:
+    return await fetchAPI(`/rentals/recommendations?limit=${limit}`);
   },
 
 
