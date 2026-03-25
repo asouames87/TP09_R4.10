@@ -17,7 +17,14 @@ connectDB();
 // Middlewares globaux
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: [
+      process.env.CLIENT_URL || "http://localhost:3000",
+      "http://localhost:3403",
+      "http://localhost:3404",
+      "http://localhost:3405",
+      "http://localhost:3406",
+      "http://localhost:5173"
+    ],
     credentials: true,
   }),
 );
